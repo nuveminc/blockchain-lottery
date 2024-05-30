@@ -45,6 +45,13 @@ contract LotteryTest is Test {
         _;
     }
 
+    modifier skipForkedNetwork() {
+        if (block.chainid != 31337) {
+            return;
+        }
+        _;
+    }
+
     function setUp() external {
         DeployLottery deployer = new DeployLottery();
         (lottery, helperConfig) = deployer.run();
@@ -162,7 +169,7 @@ contract LotteryTest is Test {
     // Uses "fuzzing" within testing by passing in an argument
     function testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpkeep(
         uint256 randomRequestId
-    ) public {
+    ) public enterAndTimetravelForward skipForkedNetwork {
         vm.expectRevert("nonexistent request");
         VRFCoordinatorV2Mock(vrfCoordinator).fulfillRandomWords(
             randomRequestId,
@@ -170,48 +177,49 @@ contract LotteryTest is Test {
         );
     }
 
-    // function testFulfillRandomWorksSelectsAWinnerAndSendsFunds()
-    //     public
-    //     enterAndTimetravelForward
-    // {
-    //     // Arrange
-    //     uint256 entrants = 5;
-    //     for (uint256 i = 0; i < entrants; i++) {
-    //         address entrant = address(uint160(i));
-    //         // is setting the user ("prank") and "dealing" them a starting balance
-    //         hoax(entrant, ENTRANT_STARTING_BALANCE);
-    //         lottery.addEntry{value: entryFee}();
-    //     }
+    function testFulfillRandomWorksSelectsAWinnerAndSendsFunds()
+        public
+        enterAndTimetravelForward
+        skipForkedNetwork
+    {
+        // Arrange
+        uint256 entrants = 5;
+        for (uint256 i = 0; i < entrants; i++) {
+            address entrant = address(uint160(i));
+            // is setting the user ("prank") and "dealing" them a starting balance
+            hoax(entrant, ENTRANT_STARTING_BALANCE);
+            lottery.addEntry{value: entryFee}();
+        }
 
-    //     uint256 lotteryBalance = address(lottery).balance;
-    //     uint256 prize = (entrants + 1) * entryFee;
+        uint256 lotteryBalance = address(lottery).balance;
+        uint256 prize = (entrants + 1) * entryFee;
 
-    //     vm.recordLogs();
-    //     lottery.performUpKeep("");
+        vm.recordLogs();
+        lottery.performUpKeep("");
 
-    //     Vm.Log[] memory entries = vm.getRecordedLogs();
-    //     bytes32 requestId = entries[1].topics[1]; // remove the last log
+        Vm.Log[] memory entries = vm.getRecordedLogs();
+        bytes32 requestId = entries[1].topics[1]; // remove the last log
 
-    //     uint256 previousTimestamp = lottery.getLastTimestamp();
+        uint256 previousTimestamp = lottery.getLastTimestamp();
 
-    //     VRFCoordinatorV2Mock(vrfCoordinator).fulfillRandomWords(
-    //         uint256(requestId),
-    //         address(lottery)
-    //     );
+        VRFCoordinatorV2Mock(vrfCoordinator).fulfillRandomWords(
+            uint256(requestId),
+            address(lottery)
+        );
 
-    //     // Assert
-    //     assert(lottery.getState() == Lottery.LotteryState.OPEN);
-    //     assert(lottery.getLastWinner() != address(0));
-    //     assert(lottery.getEntrantCount() == 0);
-    //     assert(lottery.getLastTimestamp() > previousTimestamp);
-    //     assert(address(lottery).balance == 0);
-    //     console.log("Lottery Balance", lotteryBalance);
-    //     console.log("Starting balance", ENTRANT_STARTING_BALANCE);
-    //     console.log("Prize", prize);
-    //     console.log("Winner balance", lottery.getLastWinner().balance);
-    //     assert(
-    //         (lottery.getLastWinner().balance) ==
-    //             (ENTRANT_STARTING_BALANCE + prize - entryFee)
-    //     );
-    // }
+        // Assert
+        assert(lottery.getState() == Lottery.LotteryState.OPEN);
+        assert(lottery.getLastWinner() != address(0));
+        assert(lottery.getEntrantCount() == 0);
+        assert(lottery.getLastTimestamp() > previousTimestamp);
+        assert(address(lottery).balance == 0);
+        console.log("Lottery Balance", lotteryBalance);
+        console.log("Starting balance", ENTRANT_STARTING_BALANCE);
+        console.log("Prize", prize);
+        console.log("Winner balance", lottery.getLastWinner().balance);
+        assert(
+            (lottery.getLastWinner().balance) ==
+                (ENTRANT_STARTING_BALANCE + prize - entryFee)
+        );
+    }
 }

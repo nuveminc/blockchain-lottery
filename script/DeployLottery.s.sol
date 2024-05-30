@@ -17,14 +17,15 @@ contract DeployLottery is Script {
             uint64 subscriptionId,
             uint32 callbackGasLimit,
             address linkToken,
-            uint256 deployKey
+            uint256 deployerKey
         ) = helperConfig.activeNetworkConfig();
 
         if (subscriptionId == 0) {
             console.log("SubscriptionId not set, creating new subscription");
             VRFSubscriptionFactory subscriptionFactory = new VRFSubscriptionFactory();
             subscriptionId = subscriptionFactory.createSubscription(
-                vrfCoordinator
+                vrfCoordinator,
+                deployerKey
             );
 
             console.log("Subscription created with id %d", subscriptionId);
@@ -33,7 +34,8 @@ contract DeployLottery is Script {
             fundSubscription.fundSubscription(
                 vrfCoordinator,
                 subscriptionId,
-                linkToken
+                linkToken,
+                deployerKey
             );
         }
 
@@ -54,7 +56,7 @@ contract DeployLottery is Script {
             address(lottery),
             vrfCoordinator,
             subscriptionId,
-            deployKey
+            deployerKey
         );
 
         return (lottery, helperConfig);

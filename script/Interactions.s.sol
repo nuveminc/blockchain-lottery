@@ -11,16 +11,17 @@ import {DevOpsTools} from "lib/foundry-devops/src/DevOpsTools.sol";
 contract VRFSubscriptionFactory is Script {
     function createSubscriptionUsingConfig() public returns (uint64) {
         HelperConfig helperConfig = new HelperConfig();
-        (, , address vrfCoordinator, , , , , ) = helperConfig
+        (, , address vrfCoordinator, , , , , uint256 deployerKey) = helperConfig
             .activeNetworkConfig();
-        return createSubscription(vrfCoordinator);
+        return createSubscription(vrfCoordinator, deployerKey);
     }
 
     function createSubscription(
-        address vrfCoordinator
+        address vrfCoordinator,
+        uint256 deployerKey
     ) public returns (uint64) {
         console.log("Creating subscription on chain %s", block.chainid);
-        vm.startBroadcast();
+        vm.startBroadcast(deployerKey);
         uint64 subId = VRFCoordinatorV2Mock(vrfCoordinator)
             .createSubscription();
         vm.stopBroadcast();
@@ -47,21 +48,22 @@ contract FundSubscription is Script {
             uint64 subId,
             ,
             address linkToken,
-
+            uint256 deployerKey
         ) = helperConfig.activeNetworkConfig();
-        fundSubscription(vrfCoordinator, subId, linkToken);
+        fundSubscription(vrfCoordinator, subId, linkToken, deployerKey);
     }
 
     function fundSubscription(
         address vrfCoordinator,
         uint64 subId,
-        address linkToken
+        address linkToken,
+        uint256 deployerKey
     ) public {
         console.log("Funding subscription:", subId);
         console.log("\tUsing Coordinator:", vrfCoordinator);
         console.log("\tOn ChainId", block.chainid);
         if (block.chainid == 31337) {
-            vm.startBroadcast();
+            vm.startBroadcast(deployerKey);
             console.log("Funding on Sepolia chain");
             VRFCoordinatorV2Mock(vrfCoordinator).fundSubscription(
                 subId,
@@ -70,7 +72,7 @@ contract FundSubscription is Script {
             vm.stopBroadcast();
         } else {
             console.log("Funding Anvil chain");
-            vm.startBroadcast();
+            vm.startBroadcast(deployerKey);
             LinkToken(linkToken).transferAndCall(
                 vrfCoordinator,
                 FUND_AMOUNT,
@@ -95,6 +97,7 @@ contract AddConsumer is Script {
     ) public {
         console.log("Adding consumer to lottery contract");
         console.log("Consumer added to lottery contract");
+        console.log("SubscriptionId:", subId);
         vm.startBroadcast(deployerKey);
         VRFCoordinatorV2Mock(vrfCoordinator).addConsumer(subId, lottery);
         vm.stopBroadcast();

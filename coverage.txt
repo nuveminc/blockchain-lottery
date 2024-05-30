@@ -1,0 +1,75 @@
+Compiling 41 files with Solc 0.8.19
+Solc 0.8.19 finished in 2.98s
+Compiler run successful!
+Analysing contracts...
+Running tests...
+
+Ran 8 tests for test/unit/LotteryTest.t.sol:LotteryTest
+[PASS] testAddsEntry() (gas: 68348)
+[PASS] testCheckUpKeepFalseIfLotteryCalculating() (gas: 152164)
+[PASS] testCheckUpKeepFalseIfNoBalance() (gas: 21109)
+[PASS] testEmitsEventOnEntry() (gas: 69574)
+[PASS] testIntializedInOpenState() (gas: 7995)
+[PASS] testLotteryNotOpen() (gas: 155616)
+[PASS] testRevertWhenNoEth() (gas: 11120)
+[PASS] testRevertWhenNotEnoughEth() (gas: 17847)
+Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 5.82ms (2.86ms CPU time)
+
+Ran 1 test suite in 16.02ms (5.82ms CPU time): 8 tests passed, 0 failed, 0 skipped (8 total tests)
+Uncovered for script/DeployLottery.s.sol:
+- Branch (branch: 0, path: 0) (location: source ID 35, line 22, chars 774-1392, hits: 0)
+
+Uncovered for src/Lottery.sol:
+- Function "" (location: source ID 38, line 56, chars 1869-2460, hits: 0)
+- Line (location: source ID 38, line 64, chars 2111-2132, hits: 0)
+- Statement (location: source ID 38, line 64, chars 2111-2132, hits: 0)
+- Line (location: source ID 38, line 65, chars 2142-2163, hits: 0)
+- Statement (location: source ID 38, line 65, chars 2142-2163, hits: 0)
+- Line (location: source ID 38, line 66, chars 2173-2206, hits: 0)
+- Statement (location: source ID 38, line 66, chars 2173-2206, hits: 0)
+- Line (location: source ID 38, line 67, chars 2216-2276, hits: 0)
+- Statement (location: source ID 38, line 67, chars 2216-2276, hits: 0)
+- Line (location: source ID 38, line 68, chars 2286-2319, hits: 0)
+- Statement (location: source ID 38, line 68, chars 2286-2319, hits: 0)
+- Line (location: source ID 38, line 69, chars 2329-2366, hits: 0)
+- Statement (location: source ID 38, line 69, chars 2329-2366, hits: 0)
+- Line (location: source ID 38, line 70, chars 2376-2409, hits: 0)
+- Statement (location: source ID 38, line 70, chars 2376-2409, hits: 0)
+- Line (location: source ID 38, line 71, chars 2419-2453, hits: 0)
+- Statement (location: source ID 38, line 71, chars 2419-2453, hits: 0)
+- Branch (branch: 2, path: 0) (location: source ID 38, line 119, chars 4256-4452, hits: 0)
+- Branch (branch: 2, path: 1) (location: source ID 38, line 119, chars 4256-4452, hits: 0)
+- Line (location: source ID 38, line 120, chars 4283-4441, hits: 0)
+- Statement (location: source ID 38, line 120, chars 4283-4441, hits: 0)
+
+- Function "fulfillRandomWords" (location: source ID 38, line 143, chars 5116-5730, hits: 0)
+- Line (location: source ID 38, line 147, chars 5249-5307, hits: 0)
+- Statement (location: source ID 38, line 147, chars 5249-5307, hits: 0)
+- Statement (location: source ID 38, line 147, chars 5273-5307, hits: 0)
+- Line (location: source ID 38, line 148, chars 5317-5367, hits: 0)
+- Statement (location: source ID 38, line 148, chars 5317-5367, hits: 0)
+- Line (location: source ID 38, line 149, chars 5377-5400, hits: 0)
+- Statement (location: source ID 38, line 149, chars 5377-5400, hits: 0)
+- Line (location: source ID 38, line 150, chars 5410-5447, hits: 0)
+- Statement (location: source ID 38, line 150, chars 5410-5447, hits: 0)
+- Line (location: source ID 38, line 151, chars 5457-5490, hits: 0)
+- Statement (location: source ID 38, line 151, chars 5457-5490, hits: 0)
+- Line (location: source ID 38, line 152, chars 5500-5534, hits: 0)
+- Statement (location: source ID 38, line 152, chars 5500-5534, hits: 0)
+- Line (location: source ID 38, line 153, chars 5544-5608, hits: 0)
+- Statement (location: source ID 38, line 153, chars 5544-5608, hits: 0)
+- Statement (location: source ID 38, line 153, chars 5563-5608, hits: 0)
+- Line (location: source ID 38, line 154, chars 5622-5630, hits: 0)
+- Statement (location: source ID 38, line 154, chars 5622-5630, hits: 0)
+- Branch (branch: 3, path: 0) (location: source ID 38, line 154, chars 5618-5689, hits: 0)
+- Branch (branch: 3, path: 1) (location: source ID 38, line 154, chars 5618-5689, hits: 0)
+- Line (location: source ID 38, line 155, chars 5646-5678, hits: 0)
+- Statement (location: source ID 38, line 155, chars 5646-5678, hits: 0)
+- Line (location: source ID 38, line 157, chars 5698-5723, hits: 0)
+- Statement (location: source ID 38, line 157, chars 5698-5723, hits: 0)
+
+- Function "getEntryFee" (location: source ID 38, line 163, chars 5776-5863, hits: 0)
+- Line (location: source ID 38, line 164, chars 5839-5856, hits: 0)
+- Statement (location: source ID 38, line 164, chars 5839-5856, hits: 0)
+
+

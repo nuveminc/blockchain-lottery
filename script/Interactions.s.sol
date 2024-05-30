@@ -11,7 +11,7 @@ import {DevOpsTools} from "lib/foundry-devops/src/DevOpsTools.sol";
 contract VRFSubscriptionFactory is Script {
     function createSubscriptionUsingConfig() public returns (uint64) {
         HelperConfig helperConfig = new HelperConfig();
-        (, , address vrfCoordinator, , , , ) = helperConfig
+        (, , address vrfCoordinator, , , , , ) = helperConfig
             .activeNetworkConfig();
         return createSubscription(vrfCoordinator);
     }
@@ -46,7 +46,8 @@ contract FundSubscription is Script {
             ,
             uint64 subId,
             ,
-            address linkToken
+            address linkToken,
+
         ) = helperConfig.activeNetworkConfig();
         fundSubscription(vrfCoordinator, subId, linkToken);
     }
@@ -89,11 +90,12 @@ contract AddConsumer is Script {
     function addConsumer(
         address lottery,
         address vrfCoordinator,
-        uint64 subId // uint256 deployerKey
+        uint64 subId, // uint256 deployerKey
+        uint256 deployerKey
     ) public {
         console.log("Adding consumer to lottery contract");
         console.log("Consumer added to lottery contract");
-        vm.startBroadcast();
+        vm.startBroadcast(deployerKey);
         VRFCoordinatorV2Mock(vrfCoordinator).addConsumer(subId, lottery);
         vm.stopBroadcast();
     }
@@ -107,9 +109,10 @@ contract AddConsumer is Script {
             ,
             uint64 subId, // uint256 deployerKey
             ,
-
+            ,
+            uint256 deployerKey
         ) = helperConfig.activeNetworkConfig();
-        addConsumer(lottery, vrfCoordinator, subId);
+        addConsumer(lottery, vrfCoordinator, subId, deployerKey);
     }
 
     function run() public {

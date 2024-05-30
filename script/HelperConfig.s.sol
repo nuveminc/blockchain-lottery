@@ -21,7 +21,7 @@ contract HelperConfig is Script {
         uint64 subscriptionId;
         uint32 callbackGasLimit;
         address linkToken;
-        // uint256 deployKey;
+        uint256 deployKey;
     }
 
     NetworkConfig public activeNetworkConfig;
@@ -34,7 +34,7 @@ contract HelperConfig is Script {
         }
     }
 
-    function getSepoliaConfig() public pure returns (NetworkConfig memory) {
+    function getSepoliaConfig() public view returns (NetworkConfig memory) {
         return
             NetworkConfig({
                 entryFee: 0.1 ether,
@@ -43,8 +43,8 @@ contract HelperConfig is Script {
                 gasLaneKeyHash: 0x474e34a077df58807dbe9c96d3c009b23b3c6d0cce433e59bbf5b34f823bc56c,
                 subscriptionId: 0, // 66133184494292270807306866997038117951530928245960578916297312209833076265988,
                 callbackGasLimit: 500_000,
-                linkToken: 0x779877A7B0D9E8603169DdbD7836e478b4624789
-                // deployKey: vm.envUint("SEPOLIA_PRIVATE_KEY")
+                linkToken: 0x779877A7B0D9E8603169DdbD7836e478b4624789,
+                deployKey: vm.envUint("SEPOLIA_PRIVATE_KEY")
             });
     }
 
@@ -69,8 +69,8 @@ contract HelperConfig is Script {
                 gasLaneKeyHash: 0x474e34a077df58807dbe9c96d3c009b23b3c6d0cce433e59bbf5b34f823bc56c,
                 subscriptionId: 0,
                 callbackGasLimit: 500_000,
-                linkToken: address(linkToken)
-                // deployKey: DEFAULT_ANVIL_KEY
+                linkToken: address(linkToken),
+                deployKey: DEFAULT_ANVIL_KEY
             });
     }
 }

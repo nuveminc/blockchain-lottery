@@ -55,7 +55,8 @@ contract LotteryTest is Test {
             gasLaneKeyHash,
             subscriptionId,
             callbackGasLimit,
-            linkToken
+            linkToken,
+
         ) = helperConfig.activeNetworkConfig();
         vm.deal(ENTRANT, ENTRANT_STARTING_BALANCE);
     }

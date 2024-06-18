@@ -70,9 +70,11 @@ $ anvil
 ```
 
 ### Deploy
-
+The deploy currently only supports ETH SEPOLIA and ANVIL chains.
+See HelperConfig to update with additional chains.
+ 
 ```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+$ forge script script/DeployLottery.s.sol:DeployLottery --rpc-url <your_rpc_url> --private-key <your_private_key>
 ```
 
 ### Cast

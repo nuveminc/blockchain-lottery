@@ -98,7 +98,7 @@ contract LotteryTest is Test {
     }
 
     function testLotteryNotOpen() public enterAndTimetravelForward {
-        lottery.performUpKeep("");
+        lottery.performUpkeep("");
         vm.prank(ENTRANT);
         vm.expectRevert(Lottery.Lottery__LotteryNotOpen.selector);
         lottery.addEntry{value: entryFee}();
@@ -107,7 +107,7 @@ contract LotteryTest is Test {
     /** Check Upkeep */
 
     function testCheckUpKeepFalseIfNoBalance() public timetravelForward {
-        (bool update, ) = lottery.checkUpKeep("");
+        (bool update, ) = lottery.checkUpkeep("");
 
         assert(update == false);
     }
@@ -116,9 +116,9 @@ contract LotteryTest is Test {
         public
         enterAndTimetravelForward
     {
-        lottery.performUpKeep("");
+        lottery.performUpkeep("");
 
-        (bool update, ) = lottery.checkUpKeep("");
+        (bool update, ) = lottery.checkUpkeep("");
 
         assert(lottery.getState() == Lottery.LotteryState.CALCULATING);
         assert(update == false);
@@ -129,7 +129,7 @@ contract LotteryTest is Test {
         enterAndTimetravelForward
     {
         // Assert
-        lottery.performUpKeep("");
+        lottery.performUpkeep("");
         assert(lottery.getState() == Lottery.LotteryState.CALCULATING);
     }
 
@@ -146,7 +146,7 @@ contract LotteryTest is Test {
                 state
             )
         );
-        lottery.performUpKeep("");
+        lottery.performUpkeep("");
     }
 
     function testPerformUpkeepUpdatesLotteryAndEmitsRequestId()
@@ -155,7 +155,7 @@ contract LotteryTest is Test {
     {
         // Act
         vm.recordLogs();
-        lottery.performUpKeep("");
+        lottery.performUpkeep("");
         Vm.Log[] memory entries = vm.getRecordedLogs();
         bytes32 requestId = entries[1].topics[1]; // remove the last log
 
@@ -195,7 +195,7 @@ contract LotteryTest is Test {
         uint256 prize = (entrants + 1) * entryFee;
 
         vm.recordLogs();
-        lottery.performUpKeep("");
+        lottery.performUpkeep("");
 
         Vm.Log[] memory entries = vm.getRecordedLogs();
         bytes32 requestId = entries[1].topics[1]; // remove the last log

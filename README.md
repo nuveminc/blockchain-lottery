@@ -2,7 +2,7 @@
 
 ## About
 
-This code is to create a provably random smart contract lottery.
+A random smart contract lottery using a Chainlink VRF and Automation.
 
 ## What does this do?
 
@@ -14,27 +14,6 @@ This code is to create a provably random smart contract lottery.
    1. Randomness => Chainlink VRF
    2. Time Trigger => Chainlink Automation
 
-## Contract Layout
-    Layout of Contract:
-    version
-    imports
-    errors
-    interfaces, libraries, contracts
-    Type declarations
-    State variables
-    Events
-    Modifiers
-    Functions
-    Layout of Functions:
-    constructor
-    receive function (if exists)
-    fallback function (if exists)
-    external
-    public
-    internal
-    private
-    view & pure functions
-
 ## Foundry
 
 **Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
@@ -45,6 +24,14 @@ Foundry consists of:
 -   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
 -   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
 -   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+
+
+## Testing
+Generate a test coverage report
+
+```script
+$ forge coverage --report debug > coverage.txt
+```
 
 ## Documentation
 

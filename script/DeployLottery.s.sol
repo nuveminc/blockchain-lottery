@@ -37,6 +37,7 @@ contract DeployLottery is Script {
                 linkToken,
                 deployerKey
             );
+            console.log("Subscription funded for id %d", subscriptionId);
         }
 
         vm.startBroadcast();

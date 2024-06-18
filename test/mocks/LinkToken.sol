@@ -14,7 +14,7 @@ interface ERC677Receiver {
 }
 
 contract LinkToken is ERC20 {
-    uint256 constant INITIAL_SUPPLY = 1000000000000000000000000;
+    uint256 constant INITIAL_SUPPLY = 1e24; // 1 million tokens
     uint8 constant DECIMALS = 18;
 
     constructor() ERC20("LinkToken", "LINK", DECIMALS) {

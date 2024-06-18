@@ -36,7 +36,7 @@ contract VRFSubscriptionFactory is Script {
 }
 
 contract FundSubscription is Script {
-    uint96 public constant FUND_AMOUNT = 1 ether;
+    uint96 public constant FUND_AMOUNT = 3 ether;
 
     function fundSubscriptionUsingConfig() public {
         HelperConfig helperConfig = new HelperConfig();
@@ -64,14 +64,14 @@ contract FundSubscription is Script {
         console.log("\tOn ChainId", block.chainid);
         if (block.chainid == 31337) {
             vm.startBroadcast(deployerKey);
-            console.log("Funding on Sepolia chain");
+            console.log("Funding on Anvil chain");
             VRFCoordinatorV2Mock(vrfCoordinator).fundSubscription(
                 subId,
                 FUND_AMOUNT
             );
             vm.stopBroadcast();
         } else {
-            console.log("Funding Anvil chain");
+            console.log("Funding Seolia chain");
             vm.startBroadcast(deployerKey);
             LinkToken(linkToken).transferAndCall(
                 vrfCoordinator,

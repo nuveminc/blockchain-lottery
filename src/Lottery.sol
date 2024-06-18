@@ -7,7 +7,7 @@ import {VRFConsumerBaseV2} from "@chainlink/contracts/v0.8/VRFConsumerBaseV2.sol
 /**
  * @title A toy lottery contract
  * @author 0xk4buk1
- * @notice This is a toy lottery contract whidh allows entrants to pay ETH to enter the lottery
+ * @notice This is a toy lottery contract which allows entrants to pay ETH to enter the lottery
  * and the winner is chosen randomly using Chainlink VRF after a certain spcified interval.
  * @dev Implements Chainlink VRFv2 Coordinator
  */
@@ -95,28 +95,29 @@ contract Lottery is VRFConsumerBaseV2 {
      * 2. The interval has passed
      * 3. There are entrants (ETH)
      * 4. Subscription is funded
-     * @return update
+     * @return upkeepNeeded
      */
-    function checkUpKeep(
+    function checkUpkeep(
         bytes memory /* checkData */
-    ) public view returns (bool update, bytes memory /* performData */) {
+    ) public view returns (bool upkeepNeeded, bytes memory /* performData */) {
         bool intervalPassed = (block.timestamp - s_lastTimeStamp) >= i_interval;
         bool isOpen = LotteryState.OPEN == s_lotteryState;
         bool hasEntrants = s_entrants.length > 0;
         bool hasBalance = address(this).balance > 0;
 
-        update = (isOpen && intervalPassed && hasEntrants && hasBalance);
-        return (update, "0x0");
+        upkeepNeeded = (isOpen && intervalPassed && hasEntrants && hasBalance);
+        return (upkeepNeeded, "0x0");
     }
 
     /**
      * @dev Function that is called by Chainlink Automation node to update the contract
-     * The Chainlink Automation node will peform a callback to fulfillRandomWords with the random number
+     * The Chainlink Automation node will peform a callback to fulfillRandomWords with the random number.
+     * This function is only called by checkUpkeep if it returns true. The check in this function is redundant.
      * 1. Set the lottery state to CALCULATING
      * 2. Request random number from Chainlink VRF
      */
-    function performUpKeep(bytes calldata /* performData */) external {
-        (bool update, ) = checkUpKeep("");
+    function performUpkeep(bytes calldata /* performData */) external {
+        (bool update, ) = checkUpkeep("");
         if (!update) {
             revert Lottery__UpdateSkipped(
                 address(this).balance,
@@ -152,11 +153,11 @@ contract Lottery is VRFConsumerBaseV2 {
         s_entrants = new address payable[](0);
         s_lastTimeStamp = block.timestamp;
         s_lotteryState = LotteryState.OPEN;
+        emit WinnerChosen(winner);
         (bool success, ) = winner.call{value: address(this).balance}("");
         if (!success) {
             revert Lottery__TransferFailed();
         }
-        emit WinnerChosen(winner);
     }
 
     /**
